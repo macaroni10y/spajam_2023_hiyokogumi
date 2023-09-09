@@ -1,3 +1,4 @@
+import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:flutter/material.dart';
 
 import '../api/open_ai_api_client.dart';
@@ -12,6 +13,7 @@ class ChatSamplePage extends StatefulWidget {
 class _ChatSamplePageState extends State<ChatSamplePage> {
   Conversation _conversation = Conversation('', List.empty(growable: true));
   final _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,19 +32,22 @@ class _ChatSamplePageState extends State<ChatSamplePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // messages
-            // _conversation.messages.isEmpty
-            //     ? const Text("submit message")
-                 Flexible(
-                    child: ListView.builder(
-                      itemCount: _conversation.messages.length,
-                      itemBuilder: (BuildContext context, int index) => Card(
-                        child: ListTile(
-                          title: Text(_conversation.messages[index].text),
-                        ),
-                      ),
-                    ),
+            Flexible(
+              child: ListView.builder(
+                itemCount: _conversation.messages.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    BubbleSpecialOne(
+                  text: _conversation.messages[index].text,
+                  isSender: _conversation.messages[index].speaker == "user",
+                  textStyle: const TextStyle(
+                    fontSize: 14,
                   ),
+                  color: _conversation.messages[index].speaker == "user"
+                      ? const Color.fromARGB(255, 152, 255, 152)
+                      : const Color.fromARGB(255, 238, 238, 238),
+                ),
+              ),
+            ),
             // message bar
             SafeArea(
               child: Container(
@@ -65,13 +70,13 @@ class _ChatSamplePageState extends State<ChatSamplePage> {
                       onPressed: () {
                         if (_controller.text.isEmpty) return;
                         setState(() {
-                          _conversation.messages.add(Message(
-                              _controller.text, "user"));
+                          _conversation.messages
+                              .add(Message(_controller.text, "user"));
                         });
                         ConversationApiClient()
                             .submitMessage(_conversation.id, _controller.text)
-                            .then(
-                                (value) => setState(() => _conversation = value));
+                            .then((value) =>
+                                setState(() => _conversation = value));
                         _controller.clear();
                       },
                       icon: const Icon(Icons.send),

@@ -14,6 +14,7 @@ class ConversationApiClient {
   ///   .then((value) => setState(() => _someState = value));
   /// ```
   Future<Conversation> fetchConversation(String conversationId) async {
+    // TODO: change endpoint when deployed
     var response = await http.get(
       Uri.http(Platform.isAndroid ? '10.0.2.2:8080' : 'localhost:8080',
           '/conversation', {"conversationId": conversationId}),
@@ -31,6 +32,7 @@ class ConversationApiClient {
   /// ```
   Future<Conversation> submitMessage(
       String conversationId, String message) async {
+    // TODO: change endpoint when deployed
     var response = await http.post(
         Uri.http(Platform.isAndroid ? '10.0.2.2:8080' : 'localhost:8080',
             '/conversation'),
