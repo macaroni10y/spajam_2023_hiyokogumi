@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatefulWidget {
+import 'chat_sample_page.dart';
+
+class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text(title),
       ),
-      body: Center(
-        child: Text(
-          'TODO implement',
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-      ),
-    );
-  }
+      body: Column(
+        children: [
+          const Text("samples"),
+          Center(
+            child: Card(
+                child: ListTile(
+                    title: const Text("Chat Sample"),
+                    onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ChatSamplePage()),
+                        ))),
+          ),
+        ],
+      ));
 }
