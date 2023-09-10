@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "557819657554",
+    "project_id": "spajam-2023-hiyokogumi",
+    "storage_bucket": "spajam-2023-hiyokogumi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557819657554:android:7f92bbc9060537cbb50e8b",
+        "android_client_info": {
+          "package_name": "com.example.spajam_2023_hiyokogumi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiO6jsqoPlBwF6ABZa0dSjb5uu_yl5TkM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
