@@ -32,10 +32,10 @@ class MyHomePage extends StatelessWidget {
                 child: ListTile(
                     title: const Text("Google Maps Sample"),
                     onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LocationSamplePage()),
-                    ))),
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LocationSamplePage()),
+                        ))),
           ),
         ],
       ));
