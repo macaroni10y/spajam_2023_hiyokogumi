@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'chat_sample_page.dart';
+import 'location_sample_page.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.title});
@@ -25,6 +26,16 @@ class MyHomePage extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => const ChatSamplePage()),
                         ))),
+          ),
+          Center(
+            child: Card(
+                child: ListTile(
+                    title: const Text("Google Maps Sample"),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LocationSamplePage()),
+                    ))),
           ),
         ],
       ));
