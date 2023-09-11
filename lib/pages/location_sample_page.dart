@@ -97,6 +97,7 @@ class _LocationSamplePageState extends State<LocationSamplePage> {
 
             double color = switch (user) {
               '01h9z9zfpsh6w0xy0qrnqvrrry' => BitmapDescriptor.hueRed,
+              '01ha1tfk9hkv2st77mpcrvf8z3' => BitmapDescriptor.hueRed,
               'user1' => BitmapDescriptor.hueAzure,
               'user2' => BitmapDescriptor.hueGreen,
               'user3' => BitmapDescriptor.hueBlue,
