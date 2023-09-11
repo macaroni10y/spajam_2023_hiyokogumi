@@ -47,6 +47,10 @@ class _LocationSamplePageState extends State<LocationSamplePage> {
         return null;
       }
     }
+
+    // avoid redundant location change event
+    _location.changeSettings(distanceFilter: 20);
+
     _location
         .getLocation()
         .then((locationData) => setState(() => _cameraPosition = CameraPosition(
