@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ulid/ulid.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class LocationSamplePage extends StatefulWidget {
   const LocationSamplePage({Key? key}) : super(key: key);
@@ -17,15 +17,19 @@ class _LocationSamplePageState extends State<LocationSamplePage> {
   CameraPosition? _cameraPosition;
   final Location _location = Location();
   Set<Marker> _markers = {};
-  String _ulid = '';
 
   @override
   void initState() {
     super.initState();
     _initCurrentLocation();
-    _initUlid();
     _locationSubscription();
     _loadMarkers();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller?.dispose();
   }
 
   _initCurrentLocation() async {
@@ -59,23 +63,21 @@ class _LocationSamplePageState extends State<LocationSamplePage> {
             )));
   }
 
-  Future<void> _initUlid() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey('ulid')) {
-      final ulid = Ulid().toString();
-      await prefs.setString('ulid', ulid);
-      _ulid = ulid;
-    } else {
-      _ulid = prefs.getString('ulid')!;
-    }
-    setState(() {});
+  Future<void> _loginAnonymously() async {
+    FirebaseAuth.instance.signInAnonymously();
   }
 
   /// store current location information when location changed
   _locationSubscription() {
     _location.onLocationChanged.listen((LocationData currentLocation) {
-      if (_ulid.isEmpty) return;
-      FirebaseFirestore.instance.collection('locations').doc(_ulid).set({
+      if (FirebaseAuth.instance.currentUser == null) {
+        _loginAnonymously();
+        return;
+      }
+      FirebaseFirestore.instance
+          .collection('locations')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .set({
         'latitude': currentLocation.latitude,
         'longitude': currentLocation.longitude,
         'timestamp': FieldValue.serverTimestamp(),
@@ -94,22 +96,24 @@ class _LocationSamplePageState extends State<LocationSamplePage> {
             final user = doc.id;
             double latitude = data['latitude'];
             double longitude = data['longitude'];
+            DateTime dateTime = data['timestamp'].toDate();
 
-            double color = switch (user) {
-              '01h9z9zfpsh6w0xy0qrnqvrrry' => BitmapDescriptor.hueRed,
-              '01ha1tfk9hkv2st77mpcrvf8z3' => BitmapDescriptor.hueRed,
-              'user1' => BitmapDescriptor.hueAzure,
-              'user2' => BitmapDescriptor.hueGreen,
-              'user3' => BitmapDescriptor.hueBlue,
-              _ => BitmapDescriptor.hueCyan
-            };
+            double color = dateTime
+                    .isBefore(DateTime.now().subtract(const Duration(days: 1)))
+                ? BitmapDescriptor.hueYellow
+                : BitmapDescriptor.hueAzure;
             return Marker(
               markerId: MarkerId(user),
               position: LatLng(latitude, longitude),
               icon: BitmapDescriptor.defaultMarkerWithHue(color),
+              infoWindow: InfoWindow(
+                  title: user,
+                  snippet: 'last login: ${timeago.format(dateTime)}',
+              ),
             );
           })
-          .where((element) => element.markerId.value != _ulid)
+          .where((element) =>
+              element.markerId.value != FirebaseAuth.instance.currentUser?.uid)
           .toSet();
 
       if (mounted) setState(() => _markers = newMarkers);
