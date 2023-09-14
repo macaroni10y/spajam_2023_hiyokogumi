@@ -64,16 +64,16 @@ class _CameraSamplePageState extends State<CameraSamplePage> {
           ),
           ElevatedButton(
               onPressed: () {
-                 _controller.setFocusMode(FocusMode.locked);
-                 _controller.setExposureMode(ExposureMode.locked);
+                _controller.setFocusMode(FocusMode.locked);
+                _controller.setExposureMode(ExposureMode.locked);
                 _controller.takePicture().then((file) => Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
                               TakenPicturePage(path: file.path)),
                     ));
-                 _controller.setFocusMode(FocusMode.auto);
-                 _controller.setExposureMode(ExposureMode.auto);
+                _controller.setFocusMode(FocusMode.auto);
+                _controller.setExposureMode(ExposureMode.auto);
               },
               child: const Icon(Icons.camera_alt))
         ],
