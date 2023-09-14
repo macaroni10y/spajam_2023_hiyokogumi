@@ -107,8 +107,8 @@ class _LocationSamplePageState extends State<LocationSamplePage> {
               position: LatLng(latitude, longitude),
               icon: BitmapDescriptor.defaultMarkerWithHue(color),
               infoWindow: InfoWindow(
-                  title: user,
-                  snippet: 'last login: ${timeago.format(dateTime)}',
+                title: user,
+                snippet: 'last login: ${timeago.format(dateTime)}',
               ),
             );
           })

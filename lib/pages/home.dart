@@ -1,12 +1,15 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
+import 'camera_sample_page.dart';
 import 'chat_sample_page.dart';
 import 'location_sample_page.dart';
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.title, required this.camera});
 
   final String title;
+  final CameraDescription camera;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -17,26 +20,31 @@ class MyHomePage extends StatelessWidget {
       body: Column(
         children: [
           const Text("samples"),
-          Center(
-            child: Card(
-                child: ListTile(
-                    title: const Text("Chat Sample"),
-                    onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ChatSamplePage()),
-                        ))),
-          ),
-          Center(
-            child: Card(
-                child: ListTile(
-                    title: const Text("Google Maps Sample"),
-                    onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LocationSamplePage()),
-                        ))),
-          ),
+          Card(
+              child: ListTile(
+                  title: const Text("Chat Sample"),
+                  onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ChatSamplePage()),
+                      ))),
+          Card(
+              child: ListTile(
+                  title: const Text("Google Maps Sample"),
+                  onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LocationSamplePage()),
+                      ))),
+          Card(
+              child: ListTile(
+                  title: const Text("Camera Sample"),
+                  onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                CameraSamplePage(camera: camera)),
+                      ))),
         ],
       ));
 }
