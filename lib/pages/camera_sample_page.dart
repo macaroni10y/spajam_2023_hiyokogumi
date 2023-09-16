@@ -50,7 +50,7 @@ class _CameraSamplePageState extends State<CameraSamplePage> {
   @override
   Widget build(BuildContext context) {
     if (!_controller.value.isInitialized) {
-      return const CircularProgressIndicator();
+      return const Center(child: CircularProgressIndicator());
     }
     return Scaffold(
       appBar: AppBar(
