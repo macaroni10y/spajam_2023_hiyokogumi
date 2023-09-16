@@ -24,10 +24,8 @@ class _LocationSamplePageState extends State<LocationSamplePage> {
 
   @override
   void initState() {
-    print("init state called");
     _loading = true;
     _initCurrentLocation().whenComplete(() {
-      print("init current location completed");
       _loadMarkers();
     });
     super.initState();
@@ -35,15 +33,14 @@ class _LocationSamplePageState extends State<LocationSamplePage> {
 
   @override
   void dispose() {
-    print("dispose called");
     _locationLoadSubscription?.cancel();
     _storeLocationSubscription?.cancel();
     _controller?.dispose();
     super.dispose();
   }
 
+  /// initialize current location and register subscription to location changes
   Future<void> _initCurrentLocation() async {
-    print("init current location called");
     if (!await Geolocator.isLocationServiceEnabled()) {
       return;
     }
@@ -53,9 +50,7 @@ class _LocationSamplePageState extends State<LocationSamplePage> {
       return;
     }
 
-    print("attempt to get location");
     Position locationData = await Geolocator.getCurrentPosition();
-    print("get location completed");
     if (mounted) {
       setState(() {
         _cameraPosition = CameraPosition(
@@ -89,6 +84,7 @@ class _LocationSamplePageState extends State<LocationSamplePage> {
     FirebaseAuth.instance.signInAnonymously();
   }
 
+  /// subscribe to location changes from Firestore
   _loadMarkers() {
     _locationLoadSubscription = FirebaseFirestore.instance
         .collection('locations')
@@ -97,7 +93,6 @@ class _LocationSamplePageState extends State<LocationSamplePage> {
       Set<Marker> newMarkers = snapshot.docs
           .where((doc) => doc.id != FirebaseAuth.instance.currentUser?.uid)
           .map((doc) {
-        print(doc.data().toString());
         final data = doc.data();
         final user = doc.id;
         double latitude = data['latitude'];
