@@ -110,21 +110,23 @@ class _LocationWithStreamBuilderSamplePageState
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: const Text("Google Maps Sample Page"),
         ),
-        body: StreamBuilder(
-          stream: _fetchMakersStream(),
-          builder: (BuildContext context, AsyncSnapshot<Set<Marker>> markers) =>
-              FutureBuilder<CameraPosition>(
-            future: _initCurrentLocation(),
-            builder: (BuildContext context,
-                    AsyncSnapshot<CameraPosition> cameraPosition) =>
-                cameraPosition.connectionState == ConnectionState.waiting
-                    ? const Center(child: CircularProgressIndicator())
-                    : GoogleMap(
-                        initialCameraPosition: cameraPosition.data!,
-                        myLocationEnabled: true,
-                        myLocationButtonEnabled: true,
-                        markers: markers.data!,
-                      ),
+        body: FutureBuilder<CameraPosition>(
+          future: _initCurrentLocation(),
+          builder: (BuildContext context,
+                  AsyncSnapshot<CameraPosition> cameraPosition) =>
+              StreamBuilder(
+            stream: _fetchMakersStream(),
+            builder:
+                (BuildContext context, AsyncSnapshot<Set<Marker>> markers) =>
+                    cameraPosition.connectionState == ConnectionState.waiting ||
+                            markers.connectionState == ConnectionState.waiting
+                        ? const Center(child: CircularProgressIndicator())
+                        : GoogleMap(
+                            initialCameraPosition: cameraPosition.data!,
+                            myLocationEnabled: true,
+                            myLocationButtonEnabled: true,
+                            markers: markers.data!,
+                          ),
           ),
         ),
       );
