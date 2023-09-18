@@ -22,6 +22,7 @@ class _LocationWithStreamBuilderSamplePageState
   @override
   void initState() {
     _fetchMakersStream();
+    _subscribeToLocationChanges();
     super.initState();
   }
 
@@ -50,7 +51,7 @@ class _LocationWithStreamBuilderSamplePageState
   }
 
   /// store current location information when location changed
-  Future<void> subscribeToLocationChanges() async {
+  Future<void> _subscribeToLocationChanges() async {
     _storeLocationSubscription = Geolocator.getPositionStream(
             locationSettings: const LocationSettings(distanceFilter: 20))
         .listen((Position? position) {
