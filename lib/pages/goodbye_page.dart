@@ -11,7 +11,7 @@ class GoodbyePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/animal_mark_hiyoko.png'),
+            Image.asset('assets/images/illust4.png'),
             Container(
               margin: EdgeInsets.all(16),
               child: const Text(

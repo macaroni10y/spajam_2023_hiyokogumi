@@ -11,7 +11,7 @@ class StartPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/animal_mark_hiyoko.png'),
+            Image.asset('assets/images/illust1.png'),
             Container(
               width: 150,
               margin: EdgeInsets.only(top: 24),
