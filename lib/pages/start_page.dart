@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spajam_2023_hiyokogumi/pages/create_new_room_page.dart';
 
 import 'join_existing_room_page.dart';
 
@@ -23,11 +24,10 @@ class StartPage extends StatelessWidget {
                     child: GestureDetector(
                         child: Image.asset('assets/images/heyabango@3x.png'),
                         onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const JoinExistingRoomPage()), // todo replace
-                            )),
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const JoinExistingRoomPage()))),
                   ),
                   Container(
                     width: 150,
@@ -35,11 +35,9 @@ class StartPage extends StatelessWidget {
                     child: GestureDetector(
                       child: Image.asset('assets/images/heyatsukuru@3x.png'),
                       onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const JoinExistingRoomPage()), // todo replace
-                      ),
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const CreateNewRoomPage())),
                     ),
                   ),
                 ],

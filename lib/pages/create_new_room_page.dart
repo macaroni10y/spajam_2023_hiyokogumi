@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class JoinExistingRoomPage extends StatefulWidget {
-  const JoinExistingRoomPage({super.key});
+class CreateNewRoomPage extends StatefulWidget {
+  const CreateNewRoomPage({super.key});
 
   @override
-  State<JoinExistingRoomPage> createState() => _JoinExistingRoomPageState();
+  State<CreateNewRoomPage> createState() => _CreateNewRoomPageState();
 }
 
-class _JoinExistingRoomPageState extends State<JoinExistingRoomPage> {
+class _CreateNewRoomPageState extends State<CreateNewRoomPage> {
   TextEditingController? _roomNameController;
   TextEditingController? _userNameController;
 
@@ -96,7 +96,7 @@ class _JoinExistingRoomPageState extends State<JoinExistingRoomPage> {
     );
   }
 
-  /// 参加ボタンと閉じるボタン
+  /// 作成ボタンと戻るボタン
   Widget _buttons(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(24),
@@ -106,19 +106,19 @@ class _JoinExistingRoomPageState extends State<JoinExistingRoomPage> {
             width: 90,
             margin: EdgeInsets.all(8),
             child: GestureDetector(
-                child: Image.asset('assets/images/sanka@3x.png'),
+                child: Image.asset('assets/images/sakusei@3x.png'),
                 onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              const JoinExistingRoomPage()), // todo replace to video meeting page
+                              const CreateNewRoomPage()), // todo replace
                     )),
           ),
           Container(
             width: 90,
             margin: EdgeInsets.all(8),
             child: GestureDetector(
-              child: Image.asset('assets/images/tojiru@3x.png'),
+              child: Image.asset('assets/images/modoru@3x.png'),
               onTap: () => Navigator.of(context).pop(),
             ),
           ),
