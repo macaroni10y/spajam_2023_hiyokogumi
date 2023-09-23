@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:spajam_2023_hiyokogumi/pages/location_with_stream_builder_sample_page.dart';
+import 'package:spajam_2023_hiyokogumi/pages/push_and_notify_page.dart';
 
 import 'camera_sample_page.dart';
 import 'chat_sample_page.dart';
@@ -54,6 +55,14 @@ class MyHomePage extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) =>
                                 CameraSamplePage(camera: camera)),
+                      ))),
+          Card(
+              child: ListTile(
+                  title: const Text("Push Notification Sample"),
+                  onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PushAndNotifyPage()),
                       ))),
         ],
       ));
