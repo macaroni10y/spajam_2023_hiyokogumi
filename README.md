@@ -1,4 +1,4 @@
-# spajam_2023_hiyokogumi
+# Zizz
 
 A Flutter project for spajam team hiyokogumi
 

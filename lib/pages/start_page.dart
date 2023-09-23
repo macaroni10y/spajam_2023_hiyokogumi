@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spajam_2023_hiyokogumi/pages/create_new_room_page.dart';
+import 'package:Zizz/pages/create_new_room_page.dart';
 
 import 'join_existing_room_page.dart';
 

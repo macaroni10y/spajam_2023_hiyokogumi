@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spajam_2023_hiyokogumi/pages/start_page.dart';
+import 'package:Zizz/pages/start_page.dart';
 
 class GoodbyePage extends StatelessWidget {
   const GoodbyePage({super.key});

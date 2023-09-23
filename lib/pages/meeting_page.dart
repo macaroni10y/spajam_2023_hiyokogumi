@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:spajam_2023_hiyokogumi/pages/goodbye_page.dart';
+import 'package:Zizz/pages/goodbye_page.dart';
 
 const appId = "e4d343934510484d8d31684f00c35464";
 const token =

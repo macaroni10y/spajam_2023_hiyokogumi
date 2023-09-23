@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spajam_2023_hiyokogumi/pages/meeting_page.dart';
+import 'package:Zizz/pages/meeting_page.dart';
 
 class CreateNewRoomPage extends StatefulWidget {
   const CreateNewRoomPage({super.key});
