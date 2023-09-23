@@ -22,7 +22,7 @@ dependencies:
   camera: ^0.10.5+4
   geolocator: ^10.0.1
   flutter_launcher_icons: ^0.13.1
-  flutter_webrtc: ^0.8.9
+  flutter_webrtc: ^0.9.36
   sdp_transform: ^0.3.2
 
 dev_dependencies:

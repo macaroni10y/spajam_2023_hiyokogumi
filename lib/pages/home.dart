@@ -63,7 +63,7 @@ class MyHomePage extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                        VideoTalkPage()),
+                        VideoTalkPage(title: "video talk",)),
                   ))),
         ],
       ));

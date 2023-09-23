@@ -25,6 +25,9 @@ import 'package:sdp_transform/sdp_transform.dart';
 // }
 
 class VideoTalkPage extends StatefulWidget {
+  const VideoTalkPage({Key? key, required this.title}) : super(key: key);
+
+  final String title;
 
   @override
   State<VideoTalkPage> createState() => _VideoTalkPageState();
