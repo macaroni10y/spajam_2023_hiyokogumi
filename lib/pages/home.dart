@@ -73,19 +73,7 @@ class MyHomePage extends StatelessWidget {
                   onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const AgoraPage(
-                                  role: 'host',
-                                )),
-                      ))),
-          Card(
-              child: ListTile(
-                  title: const Text("Agora as audience"),
-                  onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const AgoraPage(
-                                  role: 'audience',
-                                )),
+                            builder: (context) => const AgoraPage()),
                       ))),
         ],
       ));

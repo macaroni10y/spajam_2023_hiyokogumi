@@ -8,8 +8,7 @@ const token =
 const channel = "hiyokogumi";
 
 class AgoraPage extends StatefulWidget {
-  const AgoraPage({super.key, required this.role});
-  final String role;
+  const AgoraPage({super.key});
 
   @override
   State<AgoraPage> createState() => _AgoraPageState();
@@ -73,10 +72,7 @@ class _AgoraPageState extends State<AgoraPage> {
       ),
     );
 
-    await _engine.setClientRole(
-        role: widget.role == 'host'
-            ? ClientRoleType.clientRoleBroadcaster
-            : ClientRoleType.clientRoleAudience);
+    await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
     await _engine.enableVideo();
     await _engine.startPreview();
 
