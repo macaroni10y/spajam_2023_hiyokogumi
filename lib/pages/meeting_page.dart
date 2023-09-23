@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:Zizz/pages/goodbye_page.dart';
+import 'package:Zizz/api/face_detector.dart';
 
 const appId = "e4d343934510484d8d31684f00c35464";
 const token =
