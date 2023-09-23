@@ -12,14 +12,14 @@ const token =
     "007eJxTYPinUba09qCPgu7PNFOb88v0v7seOyy+5FDLiU8v2J5abe5XYEg1STE2MbY0NjE1NDCxMEmxSDE2NLMwSTMwSDY2NTEzCfrPl9oQyMjAz/CElZEBAkF8LoaMzMr87Pz00txMBgYAU2ch8Q==";
 const channel = "hiyokogumi";
 
-class AgoraPage extends StatefulWidget {
-  const AgoraPage({super.key});
+class MeetingPage extends StatefulWidget {
+  const MeetingPage({super.key});
 
   @override
-  State<AgoraPage> createState() => _AgoraPageState();
+  State<MeetingPage> createState() => _MeetingPageState();
 }
 
-class _AgoraPageState extends State<AgoraPage> {
+class _MeetingPageState extends State<MeetingPage> {
   List<int> _remoteUidList = List.empty(growable: true);
   int? _remoteUid;
   bool _localUserJoined = false;
@@ -55,6 +55,7 @@ class _AgoraPageState extends State<AgoraPage> {
   void dispose() {
     _engine.leaveChannel();
     _engine.release();
+    _timer?.cancel();
     super.dispose();
   }
 

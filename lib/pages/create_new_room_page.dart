@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spajam_2023_hiyokogumi/pages/agora_page.dart';
+import 'package:spajam_2023_hiyokogumi/pages/meeting_page.dart';
 
 class CreateNewRoomPage extends StatefulWidget {
   const CreateNewRoomPage({super.key});
@@ -111,7 +111,7 @@ class _CreateNewRoomPageState extends State<CreateNewRoomPage> {
                 onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const AgoraPage()),
+                          builder: (context) => const MeetingPage()),
                     )),
           ),
           Container(

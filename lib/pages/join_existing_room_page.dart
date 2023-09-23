@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spajam_2023_hiyokogumi/pages/agora_page.dart';
+import 'package:spajam_2023_hiyokogumi/pages/meeting_page.dart';
 
 class JoinExistingRoomPage extends StatefulWidget {
   const JoinExistingRoomPage({super.key});
@@ -111,7 +111,7 @@ class _JoinExistingRoomPageState extends State<JoinExistingRoomPage> {
                 onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const AgoraPage()),
+                          builder: (context) => const MeetingPage()),
                     )),
           ),
           Container(
