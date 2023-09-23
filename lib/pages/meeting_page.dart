@@ -213,6 +213,15 @@ class _MeetingPageState extends State<MeetingPage> {
                   child: Image.asset('assets/images/taishitsu@3x.png'),
                 ),
               ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: GestureDetector(onTap: _sendNotification,
+              child: Opacity(
+                opacity: 0.0,
+                child: SizedBox(width: 200, height: 200,
+                child: Image.asset('assets/images/animal_mark_hiyoko.png'),),
+              ),),
             )
           ],
         ),
