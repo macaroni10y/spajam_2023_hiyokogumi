@@ -24,7 +24,8 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_webrtc: ^0.9.43
   sdp_transform: ^0.3.2
-
+  agora_rtc_engine: 6.2.2
+  permission_handler: ^11.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

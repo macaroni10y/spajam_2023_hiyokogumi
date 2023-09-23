@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:spajam_2023_hiyokogumi/pages/agora_page.dart';
 import 'package:spajam_2023_hiyokogumi/pages/location_with_stream_builder_sample_page.dart';
 
 import 'camera_sample_page.dart';
@@ -60,11 +61,32 @@ class MyHomePage extends StatelessWidget {
               child: ListTile(
                   title: const Text("Video Talk Sample"),
                   onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                        VideoTalkPage(title: "video talk",)),
-                  ))),
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => VideoTalkPage(
+                                  title: "video talk",
+                                )),
+                      ))),
+          Card(
+              child: ListTile(
+                  title: const Text("Agora as Host"),
+                  onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AgoraPage(
+                                  role: 'host',
+                                )),
+                      ))),
+          Card(
+              child: ListTile(
+                  title: const Text("Agora as audience"),
+                  onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AgoraPage(
+                                  role: 'audience',
+                                )),
+                      ))),
         ],
       ));
 }
