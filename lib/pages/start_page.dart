@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'agora_page.dart';
+import 'join_existing_room_page.dart';
 
 class StartPage extends StatelessWidget {
   @override
@@ -26,7 +26,7 @@ class StartPage extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const AgoraPage()), // todo replace
+                                      const JoinExistingRoomPage()), // todo replace
                             )),
                   ),
                   Container(
@@ -38,7 +38,7 @@ class StartPage extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                const AgoraPage()), // todo replace
+                                const JoinExistingRoomPage()), // todo replace
                       ),
                     ),
                   ),
