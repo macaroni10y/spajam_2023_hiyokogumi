@@ -81,14 +81,18 @@ class _MeetingPageState extends State<MeetingPage> {
         onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
           debugPrint("remote user $remoteUid joined");
           setState(() {
+            // 複数人用、1 on 1用でそれぞれ保持しておく
             _remoteUidList.add(remoteUid);
+            _remoteUid = remoteUid;
           });
         },
         onUserOffline: (RtcConnection connection, int remoteUid,
             UserOfflineReasonType reason) {
           debugPrint("remote user $remoteUid left channel");
           setState(() {
+            // 複数人用、1 on 1用でそれぞれ保持しておく
             _remoteUidList.remove(remoteUid);
+            _remoteUid = null;
           });
         },
         onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
@@ -113,6 +117,12 @@ class _MeetingPageState extends State<MeetingPage> {
   // Create UI with local view and remote view
   @override
   Widget build(BuildContext context) {
+    if (_remoteUid == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    // 1 on 1 のときだけレイアウトが変わる、はず・・・
+    // 最終的に3人以上を実装しないかは要相談
+    if (_remoteUidList.length <= 2) return _render1on1Videos();
     return Scaffold(
       body: Stack(
         children: [
@@ -158,7 +168,44 @@ class _MeetingPageState extends State<MeetingPage> {
         )
       : const CircularProgressIndicator();
 
-  // Display remote user's videos
+  /// 全画面とAlignで1 on 1を前提とした画面を返す
+  Widget _render1on1Videos() {
+    return Scaffold(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Center(
+              child: AgoraVideoView(
+                controller: VideoViewController.remote(
+                  rtcEngine: _engine,
+                  canvas: VideoCanvas(uid: _remoteUid),
+                  connection: const RtcConnection(channelId: channel),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child:
+                  SizedBox(width: 160, height: 240, child: _localUserVideo()),
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                margin: const EdgeInsets.all(12),
+                width: 90,
+                child: GestureDetector(
+                  onTap: () => _showCustomDialog(context),
+                  child: Image.asset('assets/images/taishitsu@3x.png'),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// gridで3人以上を出す
   Widget _renderVideos() {
     if (_remoteUidList.isNotEmpty) {
       print("length: ${_remoteUidList.length}");
