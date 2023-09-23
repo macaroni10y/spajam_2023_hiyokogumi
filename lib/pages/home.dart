@@ -60,11 +60,10 @@ class MyHomePage extends StatelessWidget {
               child: ListTile(
                   title: const Text("Video Talk Sample"),
                   onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                        VideoTalkPage()),
-                  ))),
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => VideoTalkPage()),
+                      ))),
         ],
       ));
 }

@@ -25,7 +25,6 @@ import 'package:sdp_transform/sdp_transform.dart';
 // }
 
 class VideoTalkPage extends StatefulWidget {
-
   @override
   State<VideoTalkPage> createState() => _VideoTalkPageState();
 }
@@ -54,7 +53,7 @@ class _VideoTalkPageState extends State<VideoTalkPage> {
     };
 
     MediaStream stream =
-    await navigator.mediaDevices.getUserMedia(mediaConstraints);
+        await navigator.mediaDevices.getUserMedia(mediaConstraints);
 
     _localVideoRenderer.srcObject = stream;
     return stream;
@@ -62,6 +61,7 @@ class _VideoTalkPageState extends State<VideoTalkPage> {
 
   _createPeerConnecion() async {
     Map<String, dynamic> configuration = {
+      "sdpSemantics": "plan-b",
       "iceServers": [
         {"url": "stun:stun.l.google.com:19302"},
       ]
@@ -78,7 +78,7 @@ class _VideoTalkPageState extends State<VideoTalkPage> {
     _localStream = await _getUserMedia();
 
     RTCPeerConnection pc =
-    await createPeerConnection(configuration, offerSdpConstraints);
+        await createPeerConnection(configuration, offerSdpConstraints);
 
     pc.addStream(_localStream!);
 
@@ -106,7 +106,7 @@ class _VideoTalkPageState extends State<VideoTalkPage> {
 
   void _createOffer() async {
     RTCSessionDescription description =
-    await _peerConnection!.createOffer({'offerToReceiveVideo': 1});
+        await _peerConnection!.createOffer({'offerToReceiveVideo': 1});
     var session = parse(description.sdp.toString());
     print(json.encode(session));
     _offer = true;
@@ -116,7 +116,7 @@ class _VideoTalkPageState extends State<VideoTalkPage> {
 
   void _createAnswer() async {
     RTCSessionDescription description =
-    await _peerConnection!.createAnswer({'offerToReceiveVideo': 1});
+        await _peerConnection!.createAnswer({'offerToReceiveVideo': 1});
 
     var session = parse(description.sdp.toString());
     print(json.encode(session));
@@ -131,7 +131,7 @@ class _VideoTalkPageState extends State<VideoTalkPage> {
     String sdp = write(session, null);
 
     RTCSessionDescription description =
-    RTCSessionDescription(sdp, _offer ? 'answer' : 'offer');
+        RTCSessionDescription(sdp, _offer ? 'answer' : 'offer');
     print(description.toMap());
 
     await _peerConnection!.setRemoteDescription(description);
@@ -164,37 +164,37 @@ class _VideoTalkPageState extends State<VideoTalkPage> {
   }
 
   SizedBox videoRenderers() => SizedBox(
-    height: 210,
-    child: Row(children: [
-      Flexible(
-        child: Container(
-          key: const Key('local'),
-          margin: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
-          decoration: const BoxDecoration(color: Colors.black),
-          child: RTCVideoView(_localVideoRenderer),
-        ),
-      ),
-      Flexible(
-        child: Container(
-          key: const Key('remote'),
-          margin: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
-          decoration: const BoxDecoration(color: Colors.black),
-          child: RTCVideoView(_remoteVideoRenderer),
-        ),
-      ),
-    ]),
-  );
+        height: 210,
+        child: Row(children: [
+          Flexible(
+            child: Container(
+              key: const Key('local'),
+              margin: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
+              decoration: const BoxDecoration(color: Colors.black),
+              child: RTCVideoView(_localVideoRenderer),
+            ),
+          ),
+          Flexible(
+            child: Container(
+              key: const Key('remote'),
+              margin: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
+              decoration: const BoxDecoration(color: Colors.black),
+              child: RTCVideoView(_remoteVideoRenderer),
+            ),
+          ),
+        ]),
+      );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text("Video Talk"),
         ),
         body: Column(
           children: [
             videoRenderers(),
-            Row(
+            Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16.0),
