@@ -16,6 +16,7 @@ class AgoraPage extends StatefulWidget {
 }
 
 class _AgoraPageState extends State<AgoraPage> {
+  List<int> _remoteUidList = List.empty(growable: true);
   int? _remoteUid;
   bool _localUserJoined = false;
   late RtcEngine _engine;
@@ -55,14 +56,14 @@ class _AgoraPageState extends State<AgoraPage> {
         onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
           debugPrint("remote user $remoteUid joined");
           setState(() {
-            _remoteUid = remoteUid;
+            _remoteUidList.add(remoteUid);
           });
         },
         onUserOffline: (RtcConnection connection, int remoteUid,
             UserOfflineReasonType reason) {
           debugPrint("remote user $remoteUid left channel");
           setState(() {
-            _remoteUid = null;
+            _remoteUidList.remove(remoteUid);
           });
         },
         onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
@@ -97,40 +98,56 @@ class _AgoraPageState extends State<AgoraPage> {
       body: Stack(
         children: [
           Center(
-            child: _remoteVideo(),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: SizedBox(
-              width: 100,
-              height: 150,
-              child: Center(
-                child: _localUserJoined
-                    ? AgoraVideoView(
-                        controller: VideoViewController(
-                          rtcEngine: _engine,
-                          canvas: const VideoCanvas(uid: 0),
-                        ),
-                      )
-                    : const CircularProgressIndicator(),
-              ),
-            ),
+            child: _renderVideos(),
           ),
         ],
       ),
     );
   }
 
-  // Display remote user's video
-  Widget _remoteVideo() {
-    if (_remoteUid != null) {
-      return AgoraVideoView(
-        controller: VideoViewController.remote(
-          rtcEngine: _engine,
-          canvas: VideoCanvas(uid: _remoteUid),
-          connection: const RtcConnection(channelId: channel),
-        ),
-      );
+  Widget _localUserVideo() => _localUserJoined
+      ? Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: AgoraVideoView(
+            controller: VideoViewController(
+              rtcEngine: _engine,
+              canvas: const VideoCanvas(uid: 0),
+            ),
+          ),
+        )
+      : const CircularProgressIndicator();
+
+  // Display remote user's videos
+  Widget _renderVideos() {
+    if (_remoteUidList.isNotEmpty) {
+      print("length: ${_remoteUidList.length}");
+      return GridView.builder(
+          itemCount:
+              _remoteUidList.length + 1, // gridviewの0番目にlocal userを表示するため
+          itemBuilder: (BuildContext context, int index) {
+            if (index == 0) {
+              return _localUserVideo();
+            }
+            return Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: AgoraVideoView(
+                controller: VideoViewController.remote(
+                  rtcEngine: _engine,
+                  canvas: VideoCanvas(uid: _remoteUidList[index - 1]),
+                  connection: const RtcConnection(channelId: channel),
+                ),
+              ),
+            );
+          },
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+          ));
     } else {
       return const Text(
         'Please wait for remote user to join',
