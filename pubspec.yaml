@@ -26,6 +26,9 @@ dependencies:
   sdp_transform: ^0.3.2
   agora_rtc_engine: 6.2.2
   permission_handler: ^11.0.0
+  google_ml_kit: ^0.16.2
+  path_provider: ^2.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
