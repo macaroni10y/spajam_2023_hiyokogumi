@@ -222,6 +222,18 @@ class _MeetingPageState extends State<MeetingPage> {
                 child: SizedBox(width: 200, height: 200,
                 child: Image.asset('assets/images/animal_mark_hiyoko.png'),),
               ),),
+            ),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Container(
+                margin: const EdgeInsets.all(8),
+                width: 120,
+                height: 24,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(180, 40, 40, 40)
+                ),
+                child: Center(child: Text("name", style: TextStyle(color: Colors.white),)),
+              ),
             )
           ],
         ),
