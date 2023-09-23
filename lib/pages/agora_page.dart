@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -20,9 +24,29 @@ class _AgoraPageState extends State<AgoraPage> {
   bool _localUserJoined = false;
   late RtcEngine _engine;
 
+  // for firestore
+  Stream<QuerySnapshot<Map<String, dynamic>>>? _stream;
+  Timer? _timer;
+  Future<void> _loginAnonymously() async {
+    FirebaseAuth.instance.signInAnonymously();
+  }
+
+  /// start listening to sleep notification from Firestore
+  _startListening() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _stream = FirebaseFirestore.instance
+            .collection('sleep_notifications')
+            .snapshots();
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    _loginAnonymously();
+    _startListening();
     initAgora();
   }
 
@@ -96,6 +120,14 @@ class _AgoraPageState extends State<AgoraPage> {
           Center(
             child: _renderVideos(),
           ),
+          StreamBuilder(
+              stream: _stream,
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                return ListTile(
+                  title: _tapped(snapshot),
+                );
+              })
         ],
       ),
     );
@@ -127,16 +159,19 @@ class _AgoraPageState extends State<AgoraPage> {
             if (index == 0) {
               return _localUserVideo();
             }
-            return Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: AgoraVideoView(
-                controller: VideoViewController.remote(
-                  rtcEngine: _engine,
-                  canvas: VideoCanvas(uid: _remoteUidList[index - 1]),
-                  connection: const RtcConnection(channelId: channel),
+            return GestureDetector(
+              onTap: _sendNotification,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: AgoraVideoView(
+                  controller: VideoViewController.remote(
+                    rtcEngine: _engine,
+                    canvas: VideoCanvas(uid: _remoteUidList[index - 1]),
+                    connection: const RtcConnection(channelId: channel),
+                  ),
                 ),
               ),
             );
@@ -151,4 +186,56 @@ class _AgoraPageState extends State<AgoraPage> {
       );
     }
   }
+
+  Widget _tapped(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+    List<Notification>? list = snapshot.data?.docs
+        .map(_convertToNotification)
+        .where((e) => e.timestamp
+            .toDate()
+            .isAfter(DateTime.now().subtract(const Duration(seconds: 3))))
+        .toList();
+    return list == null || list.isEmpty
+        ? const Text('no notification')
+        : Column(
+            children: list
+                .map((e) => Text(
+                      e.message,
+                      style: const TextStyle(fontSize: 10),
+                    ))
+                .toList(),
+          );
+  }
+
+  Notification _convertToNotification(
+          QueryDocumentSnapshot<Map<String, dynamic>> e) =>
+      Notification(
+        fromId: e.data()['fromId'],
+        toId: e.data()['toId'],
+        timestamp: e.data()['timestamp'] ??
+            Timestamp.fromDate(
+                DateTime.now().subtract(const Duration(seconds: 10))),
+        message: e.data()['message'],
+      );
+
+  // TODO 今は自分自身に通知することになってます 本来は相手のIDを通知する
+  void _sendNotification() {
+    FirebaseFirestore.instance.collection('sleep_notifications').add({
+      'fromId': FirebaseAuth.instance.currentUser?.uid,
+      'toId': FirebaseAuth.instance.currentUser?.uid,
+      'timestamp': FieldValue.serverTimestamp(),
+      'message': '${FirebaseAuth.instance.currentUser?.uid} tapped you',
+    });
+  }
+}
+
+class Notification {
+  final String fromId;
+  final String toId;
+  final Timestamp timestamp;
+  final String message;
+  Notification(
+      {required this.fromId,
+      required this.toId,
+      required this.timestamp,
+      required this.message});
 }
