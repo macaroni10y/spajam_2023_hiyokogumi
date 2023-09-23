@@ -7,7 +7,6 @@ import 'package:spajam_2023_hiyokogumi/pages/push_and_notify_page.dart';
 import 'camera_sample_page.dart';
 import 'chat_sample_page.dart';
 import 'location_sample_page.dart';
-import 'video_talk_page.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.title, required this.camera});
@@ -57,16 +56,6 @@ class MyHomePage extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) =>
                                 CameraSamplePage(camera: camera)),
-                      ))),
-          Card(
-              child: ListTile(
-                  title: const Text("Video Talk Sample"),
-                  onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => VideoTalkPage(
-                                  title: "video talk",
-                                )),
                       ))),
           Card(
               child: ListTile(
