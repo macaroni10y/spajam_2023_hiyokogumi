@@ -1,6 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:spajam_2023_hiyokogumi/pages/start_page.dart';
+
 
 import 'firebase_options.dart';
 import 'pages/home.dart';
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page', camera: camera),
+      home: StartPage(),
     );
   }
 }
