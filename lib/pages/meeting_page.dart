@@ -118,11 +118,26 @@ class _MeetingPageState extends State<MeetingPage> {
   @override
   Widget build(BuildContext context) {
     if (_remoteUid == null) {
-      return const Center(child: CircularProgressIndicator());
+      return SafeArea(
+        child: Scaffold(
+          body: Stack(children: [
+            _waitDialog(),
+            Align(alignment: Alignment.topRight,
+            child: Container(
+              margin: const EdgeInsets.all(12),
+              width: 90,
+              child: GestureDetector(
+                onTap: () => _showCustomDialog(context),
+                child: Image.asset('assets/images/taishitsu@3x.png'),
+              ),
+            ),)
+          ]),
+        ),
+      );
     }
     // 1 on 1 のときだけレイアウトが変わる、はず・・・
     // 最終的に3人以上を実装しないかは要相談
-    if (_remoteUidList.length <= 2) return _render1on1Videos();
+    if (true) return _render1on1Videos();
     return Scaffold(
       body: Stack(
         children: [
@@ -261,6 +276,19 @@ class _MeetingPageState extends State<MeetingPage> {
                     ))
                 .toList(),
           );
+  }
+
+  Widget _waitDialog() {
+    return Center(child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("他の人がくるまでちょっと待ってね...", style: TextStyle(fontSize: 16),),
+        SizedBox(
+            width: 50,
+            height: 50,
+            child: CircularProgressIndicator()),
+      ],
+    ));
   }
 
   Notification _convertToNotification(

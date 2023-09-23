@@ -628,6 +628,40 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
+  - agora_rtc_engine (6.2.2):
+    - AgoraIrisRTC_iOS (= 4.2.2-build.1)
+    - AgoraRtcEngine_iOS (= 4.2.2)
+    - Flutter
+  - AgoraIrisRTC_iOS (4.2.2-build.1)
+  - AgoraRtcEngine_iOS (4.2.2):
+    - AgoraRtcEngine_iOS/AIAEC (= 4.2.2)
+    - AgoraRtcEngine_iOS/AINS (= 4.2.2)
+    - AgoraRtcEngine_iOS/AudioBeauty (= 4.2.2)
+    - AgoraRtcEngine_iOS/ClearVision (= 4.2.2)
+    - AgoraRtcEngine_iOS/ContentInspect (= 4.2.2)
+    - AgoraRtcEngine_iOS/DRM (= 4.2.2)
+    - AgoraRtcEngine_iOS/FaceDetection (= 4.2.2)
+    - AgoraRtcEngine_iOS/ReplayKit (= 4.2.2)
+    - AgoraRtcEngine_iOS/RtcBasic (= 4.2.2)
+    - AgoraRtcEngine_iOS/SpatialAudio (= 4.2.2)
+    - AgoraRtcEngine_iOS/VideoCodecDec (= 4.2.2)
+    - AgoraRtcEngine_iOS/VideoCodecEnc (= 4.2.2)
+    - AgoraRtcEngine_iOS/VirtualBackground (= 4.2.2)
+    - AgoraRtcEngine_iOS/VQA (= 4.2.2)
+  - AgoraRtcEngine_iOS/AIAEC (4.2.2)
+  - AgoraRtcEngine_iOS/AINS (4.2.2)
+  - AgoraRtcEngine_iOS/AudioBeauty (4.2.2)
+  - AgoraRtcEngine_iOS/ClearVision (4.2.2)
+  - AgoraRtcEngine_iOS/ContentInspect (4.2.2)
+  - AgoraRtcEngine_iOS/DRM (4.2.2)
+  - AgoraRtcEngine_iOS/FaceDetection (4.2.2)
+  - AgoraRtcEngine_iOS/ReplayKit (4.2.2)
+  - AgoraRtcEngine_iOS/RtcBasic (4.2.2)
+  - AgoraRtcEngine_iOS/SpatialAudio (4.2.2)
+  - AgoraRtcEngine_iOS/VideoCodecDec (4.2.2)
+  - AgoraRtcEngine_iOS/VideoCodecEnc (4.2.2)
+  - AgoraRtcEngine_iOS/VirtualBackground (4.2.2)
+  - AgoraRtcEngine_iOS/VQA (4.2.2)
   - BoringSSL-GRPC (0.0.24):
     - BoringSSL-GRPC/Implementation (= 0.0.24)
     - BoringSSL-GRPC/Interface (= 0.0.24)
@@ -774,6 +808,8 @@ PODS:
     - gRPC-Core/Interface (= 1.50.1)
   - gRPC-Core/Interface (1.50.1)
   - GTMSessionFetcher/Core (3.1.1)
+  - iris_method_channel (0.0.1):
+    - Flutter
   - leveldb-library (1.22.2)
   - nanopb (2.30909.0):
     - nanopb/decode (= 2.30909.0)
@@ -783,6 +819,8 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - permission_handler_apple (9.1.1):
+    - Flutter
   - PromisesObjC (2.3.1)
   - RecaptchaInterop (100.0.0)
   - shared_preferences_foundation (0.0.1):
@@ -791,6 +829,7 @@ PODS:
   - WebRTC-SDK (114.5735.07)
 
 DEPENDENCIES:
+  - agora_rtc_engine (from `.symlinks/plugins/agora_rtc_engine/ios`)
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
@@ -799,12 +838,16 @@ DEPENDENCIES:
   - flutter_webrtc (from `.symlinks/plugins/flutter_webrtc/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
+  - iris_method_channel (from `.symlinks/plugins/iris_method_channel/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
 
 SPEC REPOS:
   trunk:
     - abseil
+    - AgoraIrisRTC_iOS
+    - AgoraRtcEngine_iOS
     - BoringSSL-GRPC
     - Firebase
     - FirebaseAppCheckInterop
@@ -824,6 +867,8 @@ SPEC REPOS:
     - WebRTC-SDK
 
 EXTERNAL SOURCES:
+  agora_rtc_engine:
+    :path: ".symlinks/plugins/agora_rtc_engine/ios"
   camera_avfoundation:
     :path: ".symlinks/plugins/camera_avfoundation/ios"
   cloud_firestore:
@@ -840,13 +885,20 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/geolocator_apple/ios"
   google_maps_flutter_ios:
     :path: ".symlinks/plugins/google_maps_flutter_ios/ios"
+  iris_method_channel:
+    :path: ".symlinks/plugins/iris_method_channel/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
 
 SPEC CHECKSUMS:
   abseil: 926fb7a82dc6d2b8e1f2ed7f3a718bce691d1e46
+  agora_rtc_engine: 667a7de14f35858a31b0c64cd54042a2158ef198
+  AgoraIrisRTC_iOS: 7e71322c06db6c29ceaf89a964fb8b2700a75001
+  AgoraRtcEngine_iOS: c510de329cd905daff3f01fa4c872ea6d5eaee23
   BoringSSL-GRPC: 3175b25143e648463a56daeaaa499c6cb86dad33
   camera_avfoundation: 3125e8cd1a4387f6f31c6c63abb8a55892a9eeeb
   cloud_firestore: ac000d8c5a79d57dc69238ea06bb422880fb825e
@@ -867,9 +919,11 @@ SPEC CHECKSUMS:
   "gRPC-C++": 0968bace703459fd3e5dcb0b2bed4c573dbff046
   gRPC-Core: 17108291d84332196d3c8466b48f016fc17d816d
   GTMSessionFetcher: e8647203b65cee28c5f73d0f473d096653945e72
+  iris_method_channel: 0617c689164d8154c020c50f63ca79f92b8a7b9d
   leveldb-library: f03246171cce0484482ec291f88b6d563699ee06
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
+  permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
