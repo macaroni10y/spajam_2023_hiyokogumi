@@ -112,9 +112,6 @@ class _AgoraPageState extends State<AgoraPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Agora Video Call'),
-      ),
       body: Stack(
         children: [
           Center(
@@ -127,7 +124,18 @@ class _AgoraPageState extends State<AgoraPage> {
                 return ListTile(
                   title: _tapped(snapshot),
                 );
-              })
+              }),
+          Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              margin: const EdgeInsets.all(12),
+              width: 90,
+              child: GestureDetector(
+                onTap: () => _showCustomDialog(context),
+                child: Image.asset('assets/images/taishitsu@3x.png'),
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -225,6 +233,69 @@ class _AgoraPageState extends State<AgoraPage> {
       'timestamp': FieldValue.serverTimestamp(),
       'message': '${FirebaseAuth.instance.currentUser?.uid} tapped you',
     });
+  }
+
+  void _showCustomDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Container(
+            height: 170,
+            width: 250,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            child: Column(
+              children: [
+                Flexible(
+                  flex: 2,
+                  child: Container(
+                    margin: EdgeInsets.all(20),
+                    padding: EdgeInsets.all(20.0),
+                    child: Text(
+                      '退室しますか？',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  flex: 1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.all(8),
+                        width: 80,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          },
+                          child: Image.asset('assets/images/hai@3x.png'),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(8),
+                        width: 80,
+                        child: GestureDetector(
+                          onTap: () => Navigator.of(context).pop(),
+                          child: Image.asset('assets/images/iie@3x.png'),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
 
