@@ -3,9 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:spajam_2023_hiyokogumi/pages/start_page.dart';
 
-
 import 'firebase_options.dart';
-import 'pages/home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +16,9 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key, required this.camera});
+
   final CameraDescription camera;
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
