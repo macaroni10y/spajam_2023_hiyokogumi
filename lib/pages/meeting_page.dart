@@ -1,12 +1,14 @@
 import 'dart:async';
 
+import 'package:Zizz/pages/goodbye_page.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:Zizz/pages/goodbye_page.dart';
-import 'package:Zizz/api/face_detector.dart';
 
 const appId = "e4d343934510484d8d31684f00c35464";
 const token =
@@ -14,7 +16,8 @@ const token =
 const channel = "hiyokogumi";
 
 class MeetingPage extends StatefulWidget {
-  const MeetingPage({super.key});
+  final CameraDescription cameraDescription;
+  const MeetingPage({super.key, required this.cameraDescription});
 
   @override
   State<MeetingPage> createState() => _MeetingPageState();
@@ -25,13 +28,22 @@ class _MeetingPageState extends State<MeetingPage> {
   int? _remoteUid;
   bool _localUserJoined = false;
   late RtcEngine _engine;
-
   // for firestore
   Stream<QuerySnapshot<Map<String, dynamic>>>? _stream;
   Timer? _timer;
   Future<void> _loginAnonymously() async {
     FirebaseAuth.instance.signInAnonymously();
   }
+
+  // for camera
+  late CameraController _controller;
+  late Future<void> _initializeControllerFuture;
+  final FaceDetector _faceDetector = FaceDetector(
+      options: FaceDetectorOptions(
+    enableClassification: true,
+  ));
+
+  String? faceInfo;
 
   /// start listening to sleep notification from Firestore
   _startListening() {
@@ -50,6 +62,9 @@ class _MeetingPageState extends State<MeetingPage> {
     _loginAnonymously();
     _startListening();
     initAgora();
+    _controller =
+        CameraController(widget.cameraDescription, ResolutionPreset.medium);
+    _initializeControllerFuture = _controller.initialize();
   }
 
   @override
@@ -57,6 +72,9 @@ class _MeetingPageState extends State<MeetingPage> {
     _engine.leaveChannel();
     _engine.release();
     _timer?.cancel();
+    _controller.dispose();
+    _faceDetector.close();
+    _startCameraStreaming();
     super.dispose();
   }
 
@@ -123,15 +141,17 @@ class _MeetingPageState extends State<MeetingPage> {
         child: Scaffold(
           body: Stack(children: [
             _waitDialog(),
-            Align(alignment: Alignment.topRight,
-            child: Container(
-              margin: const EdgeInsets.all(12),
-              width: 90,
-              child: GestureDetector(
-                onTap: () => _showCustomDialog(context),
-                child: Image.asset('assets/images/taishitsu@3x.png'),
+            Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                margin: const EdgeInsets.all(12),
+                width: 90,
+                child: GestureDetector(
+                  onTap: () => _showCustomDialog(context),
+                  child: Image.asset('assets/images/taishitsu@3x.png'),
+                ),
               ),
-            ),)
+            )
           ]),
         ),
       );
@@ -217,12 +237,17 @@ class _MeetingPageState extends State<MeetingPage> {
             ),
             Align(
               alignment: Alignment.center,
-              child: GestureDetector(onTap: _sendNotification,
-              child: Opacity(
-                opacity: 0.0,
-                child: SizedBox(width: 200, height: 200,
-                child: Image.asset('assets/images/animal_mark_hiyoko.png'),),
-              ),),
+              child: GestureDetector(
+                onTap: _sendNotification,
+                child: Opacity(
+                  opacity: 0.0,
+                  child: SizedBox(
+                    width: 200,
+                    height: 200,
+                    child: Image.asset('assets/images/animal_mark_hiyoko.png'),
+                  ),
+                ),
+              ),
             ),
             Align(
               alignment: Alignment.bottomLeft,
@@ -230,10 +255,25 @@ class _MeetingPageState extends State<MeetingPage> {
                 margin: const EdgeInsets.all(8),
                 width: 120,
                 height: 24,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(180, 40, 40, 40)
-                ),
-                child: Center(child: Text("name", style: TextStyle(color: Colors.white),)),
+                decoration:
+                    BoxDecoration(color: Color.fromARGB(180, 40, 40, 40)),
+                child: Center(
+                    child: Text(
+                  "name",
+                  style: TextStyle(color: Colors.white),
+                )),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                width: 120,
+                height: 24,
+                child: Center(
+                    child: Text(
+                  faceInfo ?? "faceInfo is null",
+                  style: TextStyle(color: Colors.blue),
+                )),
               ),
             )
           ],
@@ -301,14 +341,15 @@ class _MeetingPageState extends State<MeetingPage> {
   }
 
   Widget _waitDialog() {
-    return Center(child: Column(
+    return Center(
+        child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("他の人がくるまでちょっと待ってね...", style: TextStyle(fontSize: 16),),
-        SizedBox(
-            width: 50,
-            height: 50,
-            child: CircularProgressIndicator()),
+        Text(
+          "他の人がくるまでちょっと待ってね...",
+          style: TextStyle(fontSize: 16),
+        ),
+        SizedBox(width: 50, height: 50, child: CircularProgressIndicator()),
       ],
     ));
   }
@@ -376,7 +417,10 @@ class _MeetingPageState extends State<MeetingPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      const GoodbyePage()),
+                                      GoodbyePage(
+                                        cameraDescription:
+                                            widget.cameraDescription,
+                                      )),
                               (Route<dynamic> route) => false,
                             );
                           },
@@ -400,6 +444,44 @@ class _MeetingPageState extends State<MeetingPage> {
         );
       },
     );
+  }
+
+  void _startCameraStreaming() {
+    _controller.startImageStream(_processImage);
+  }
+
+  Future<void> _processImage(CameraImage cameraImage) async {
+    if (mounted) {
+      // CameraImageからInputImageを作成する
+      final WriteBuffer allBytes = WriteBuffer();
+      for (final Plane plane in cameraImage.planes) {
+        allBytes.putUint8List(plane.bytes);
+      }
+      final bytes = allBytes.done().buffer.asUint8List();
+
+      final Size imageSize =
+          Size(cameraImage.width.toDouble(), cameraImage.height.toDouble());
+
+      final InputImageFormat inputImageFormat =
+          InputImageFormatValue.fromRawValue(cameraImage.format.raw) ??
+              InputImageFormat.nv21;
+
+      final inputImageData = InputImageMetadata(
+          size: imageSize,
+          rotation: InputImageRotation.rotation0deg,
+          format: inputImageFormat,
+          bytesPerRow: 1);
+
+      final inputImage =
+          InputImage.fromBytes(bytes: bytes, metadata: inputImageData);
+
+      final faces = await _faceDetector.processImage(inputImage);
+      int faceIndex = 0;
+      for (Face oneFace in faces) {
+        faceIndex++;
+        faceInfo = '${faceIndex}左目の開き具合：${oneFace.leftEyeOpenProbability}\n\n';
+      }
+    }
   }
 }
 
