@@ -12,10 +12,13 @@ class StartPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-                width: 200,
-                height: 200,
+                width: 160,
+                height: 160,
                 child: Image.asset('assets/images/logo4x.png')),
-            Image.asset('assets/images/illust1_re4x.png'),
+            SizedBox(
+                width: 160,
+                height: 160,
+                child: Image.asset('assets/images/illust1_re4x.png')),
             Container(
               width: 150,
               margin: EdgeInsets.only(top: 24),
