@@ -30,6 +30,7 @@ class _MeetingPageState extends State<MeetingPage> {
   List<int> _remoteUidList = List.empty(growable: true);
   int? _remoteUid;
   bool _localUserJoined = false;
+  bool _enableSound = false;
   String _sleeping = 'awake'; // awake or sleeping or waken
   late RtcEngine _engine;
   Timer? _timer;
@@ -55,8 +56,10 @@ class _MeetingPageState extends State<MeetingPage> {
         .collection('sleep_notifications')
         .snapshots()
         .listen((event) {
-      audioPlayer.play(AssetSource('audio/short_bomb.mp3'));
-      Vibration.vibrate();
+      if (_enableSound) {
+        audioPlayer.play(AssetSource('audio/short_bomb.mp3'));
+        Vibration.vibrate();
+      }
     });
   }
 
@@ -68,12 +71,21 @@ class _MeetingPageState extends State<MeetingPage> {
     });
   }
 
+  _disableSoundOnInitialize() {
+    Future.delayed(const Duration(seconds: 5), () {
+      setState(() {
+        _enableSound = true;
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _loginAnonymously();
     _startListening();
     _sleepPeriodically();
+    _disableSoundOnInitialize();
     initAgora();
     _controller =
         CameraController(widget.cameraDescription, ResolutionPreset.medium);
