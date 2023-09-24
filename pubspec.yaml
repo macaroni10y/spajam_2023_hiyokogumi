@@ -31,7 +31,7 @@ dependencies:
 # you need to run `flutter pub run flutter_native_splash:create` to generate splash
 flutter_native_splash:
   color: '#FFD72E'
-  image: 'assets/images/splash4x.png'
+  image: 'assets/images/logo_re.png'
   fullscreen: true
 
 dev_dependencies:
