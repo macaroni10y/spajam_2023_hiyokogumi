@@ -11,7 +11,11 @@ class StartPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/illust1.png'),
+            SizedBox(
+                width: 200,
+                height: 200,
+                child: Image.asset('assets/images/logo4x.png')),
+            Image.asset('assets/images/illust1_re4x.png'),
             Container(
               width: 150,
               margin: EdgeInsets.only(top: 24),
