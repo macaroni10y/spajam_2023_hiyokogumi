@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:Zizz/pages/start_page.dart';
+import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
 
 class GoodbyePage extends StatelessWidget {
-  const GoodbyePage({super.key});
+  const GoodbyePage({super.key, required this.cameraDescription});
+  final CameraDescription cameraDescription;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,9 @@ class GoodbyePage extends StatelessWidget {
                 onTap: () => Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => StartPage()),
+                      builder: (BuildContext context) => StartPage(
+                            cameraDescription: cameraDescription,
+                          )),
                   (Route<dynamic> route) => false,
                 ),
                 child: Image.asset('assets/images/ok@3x.png'),

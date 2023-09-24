@@ -1,9 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:Zizz/pages/create_new_room_page.dart';
+import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
 
 import 'join_existing_room_page.dart';
 
 class StartPage extends StatelessWidget {
+  final CameraDescription cameraDescription;
+
+  StartPage({super.key, required this.cameraDescription});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +24,9 @@ class StartPage extends StatelessWidget {
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const JoinExistingRoomPage()))),
+                          builder: (context) => JoinExistingRoomPage(
+                                cameraDescription: cameraDescription,
+                              )))),
             ),
             Container(
               width: 150,
@@ -30,7 +36,8 @@ class StartPage extends StatelessWidget {
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const CreateNewRoomPage())),
+                        builder: (context) => CreateNewRoomPage(
+                            cameraDescription: cameraDescription))),
               ),
             )
           ],
