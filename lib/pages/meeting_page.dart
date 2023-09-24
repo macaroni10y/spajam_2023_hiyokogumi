@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:Zizz/pages/goodbye_page.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,9 +25,11 @@ class MeetingPage extends StatefulWidget {
 }
 
 class _MeetingPageState extends State<MeetingPage> {
+  final audioPlayer = AudioPlayer();
   List<int> _remoteUidList = List.empty(growable: true);
   int? _remoteUid;
   bool _localUserJoined = false;
+  String _sleeping = 'awake'; // awake or sleeping or waken
   late RtcEngine _engine;
   // for firestore
   Stream<QuerySnapshot<Map<String, dynamic>>>? _stream;
@@ -47,11 +50,19 @@ class _MeetingPageState extends State<MeetingPage> {
 
   /// start listening to sleep notification from Firestore
   _startListening() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
       setState(() {
         _stream = FirebaseFirestore.instance
             .collection('sleep_notifications')
             .snapshots();
+      });
+    });
+  }
+
+  _sleepPeriodically() {
+    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      setState(() {
+        _sleeping = 'sleeping';
       });
     });
   }
@@ -61,6 +72,7 @@ class _MeetingPageState extends State<MeetingPage> {
     super.initState();
     _loginAnonymously();
     _startListening();
+    _sleepPeriodically();
     initAgora();
     _controller =
         CameraController(widget.cameraDescription, ResolutionPreset.medium);
@@ -238,13 +250,26 @@ class _MeetingPageState extends State<MeetingPage> {
             Align(
               alignment: Alignment.center,
               child: GestureDetector(
-                onTap: _sendNotification,
+                onTap: () {
+                  setState(() {
+                    _sleeping = 'waken';
+                  });
+                  Future.delayed(const Duration(seconds: 1), () {
+                    setState(() {
+                      _sleeping = 'awake';
+                    });
+                  });
+                  audioPlayer.play(AssetSource('audio/shot_bomb.mp3'));
+                  _sendNotification();
+                },
                 child: Opacity(
-                  opacity: 0.0,
+                  opacity: _sleeping == 'awake' ? 0.0 : 1.0,
                   child: SizedBox(
                     width: 200,
                     height: 200,
-                    child: Image.asset('assets/images/animal_mark_hiyoko.png'),
+                    child: _sleeping == 'waken'
+                        ? Image.asset('assets/images/awa2.gif')
+                        : Image.asset('assets/images/awa1.gif'),
                   ),
                 ),
               ),
