@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:Zizz/pages/meeting_page.dart';
+import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
 
 class CreateNewRoomPage extends StatefulWidget {
-  const CreateNewRoomPage({super.key});
+  final CameraDescription cameraDescription;
+  const CreateNewRoomPage({super.key, required this.cameraDescription});
 
   @override
   State<CreateNewRoomPage> createState() => _CreateNewRoomPageState();
@@ -111,7 +113,8 @@ class _CreateNewRoomPageState extends State<CreateNewRoomPage> {
                 onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MeetingPage()),
+                          builder: (context) => MeetingPage(
+                              cameraDescription: widget.cameraDescription)),
                     )),
           ),
           Container(
