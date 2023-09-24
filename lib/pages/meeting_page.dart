@@ -34,6 +34,8 @@ class _MeetingPageState extends State<MeetingPage> {
   // for firestore
   Stream<QuerySnapshot<Map<String, dynamic>>>? _stream;
   Timer? _timer;
+  StreamSubscription<QuerySnapshot<Map<String, dynamic>>>?
+      _notificationStreamSubscription;
   Future<void> _loginAnonymously() async {
     FirebaseAuth.instance.signInAnonymously();
   }
@@ -50,13 +52,19 @@ class _MeetingPageState extends State<MeetingPage> {
 
   /// start listening to sleep notification from Firestore
   _startListening() {
-    _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
-      setState(() {
-        _stream = FirebaseFirestore.instance
-            .collection('sleep_notifications')
-            .snapshots();
-      });
+    _notificationStreamSubscription = FirebaseFirestore.instance
+        .collection('sleep_notifications')
+        .snapshots()
+        .listen((event) {
+      audioPlayer.play(AssetSource('audio/short_bomb.mp3'));
     });
+    // _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+    //   setState(() {
+    //     _stream = FirebaseFirestore.instance
+    //         .collection('sleep_notifications')
+    //         .snapshots();
+    //   });
+    // });
   }
 
   _sleepPeriodically() {
@@ -87,6 +95,7 @@ class _MeetingPageState extends State<MeetingPage> {
     _controller.dispose();
     _faceDetector.close();
     _startCameraStreaming();
+    _notificationStreamSubscription?.cancel();
     super.dispose();
   }
 
@@ -259,7 +268,6 @@ class _MeetingPageState extends State<MeetingPage> {
                       _sleeping = 'awake';
                     });
                   });
-                  audioPlayer.play(AssetSource('audio/short_bomb.mp3'));
                   _sendNotification();
                 },
                 child: Opacity(
