@@ -26,6 +26,14 @@ dependencies:
   sdp_transform: ^0.3.2
   agora_rtc_engine: 6.2.2
   permission_handler: ^11.0.0
+  flutter_native_splash: ^2.3.2
+
+# you need to run `flutter pub run flutter_native_splash:create` to generate splash
+flutter_native_splash:
+  color: '#000000'
+  image: 'assets/images/splash.png'
+  fullscreen: true
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -40,4 +48,4 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/animal_mark_hiyoko.png"
+  image_path: "assets/images/app_icon.png"
