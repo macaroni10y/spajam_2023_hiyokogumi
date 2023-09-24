@@ -254,12 +254,12 @@ class _MeetingPageState extends State<MeetingPage> {
                   setState(() {
                     _sleeping = 'waken';
                   });
-                  Future.delayed(const Duration(seconds: 1), () {
+                  Future.delayed(const Duration(seconds: 2), () {
                     setState(() {
                       _sleeping = 'awake';
                     });
                   });
-                  audioPlayer.play(AssetSource('audio/shot_bomb.mp3'));
+                  audioPlayer.play(AssetSource('audio/short_bomb.mp3'));
                   _sendNotification();
                 },
                 child: Opacity(

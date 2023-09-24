@@ -37,6 +37,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/audio/
 
 # you need to run `flutter pub run flutter_launcher_icons:main` to generate icons
 flutter_icons:
