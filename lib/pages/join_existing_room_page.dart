@@ -26,7 +26,7 @@ class _JoinExistingRoomPageState extends State<JoinExistingRoomPage> {
                   width: 120,
                   height: 120,
                   child: Image.asset(
-                      'assets/images/animal_mark_hiyoko.png')), // TODO replace
+                      'assets/images/illust2.png')), // TODO replace
               _buttons(context),
             ],
           )

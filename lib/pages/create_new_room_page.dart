@@ -26,7 +26,7 @@ class _CreateNewRoomPageState extends State<CreateNewRoomPage> {
                   width: 120,
                   height: 120,
                   child: Image.asset(
-                      'assets/images/animal_mark_hiyoko.png')), // TODO replace
+                      'assets/images/illust3.png')), // TODO replace
               _buttons(context),
             ],
           )
