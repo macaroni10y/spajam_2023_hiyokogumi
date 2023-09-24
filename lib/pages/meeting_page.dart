@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:vibration/vibration.dart';
 
 const appId = "e4d343934510484d8d31684f00c35464";
 const token =
@@ -31,8 +32,6 @@ class _MeetingPageState extends State<MeetingPage> {
   bool _localUserJoined = false;
   String _sleeping = 'awake'; // awake or sleeping or waken
   late RtcEngine _engine;
-  // for firestore
-  Stream<QuerySnapshot<Map<String, dynamic>>>? _stream;
   Timer? _timer;
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>?
       _notificationStreamSubscription;
@@ -57,14 +56,8 @@ class _MeetingPageState extends State<MeetingPage> {
         .snapshots()
         .listen((event) {
       audioPlayer.play(AssetSource('audio/short_bomb.mp3'));
+      Vibration.vibrate();
     });
-    // _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
-    //   setState(() {
-    //     _stream = FirebaseFirestore.instance
-    //         .collection('sleep_notifications')
-    //         .snapshots();
-    //   });
-    // });
   }
 
   _sleepPeriodically() {
@@ -177,37 +170,7 @@ class _MeetingPageState extends State<MeetingPage> {
         ),
       );
     }
-    // 1 on 1 のときだけレイアウトが変わる、はず・・・
-    // 最終的に3人以上を実装しないかは要相談
-    if (true) return _render1on1Videos();
-    return Scaffold(
-      body: Stack(
-        children: [
-          Center(
-            child: _renderVideos(),
-          ),
-          StreamBuilder(
-              stream: _stream,
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-                return ListTile(
-                  title: _tapped(snapshot),
-                );
-              }),
-          Align(
-            alignment: Alignment.topRight,
-            child: Container(
-              margin: const EdgeInsets.all(12),
-              width: 90,
-              child: GestureDetector(
-                onTap: () => _showCustomDialog(context),
-                child: Image.asset('assets/images/taishitsu@3x.png'),
-              ),
-            ),
-          )
-        ],
-      ),
-    );
+    return _render1on1Videos();
   }
 
   Widget _localUserVideo() => _localUserJoined
@@ -297,18 +260,6 @@ class _MeetingPageState extends State<MeetingPage> {
                 )),
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                width: 120,
-                height: 24,
-                child: Center(
-                    child: Text(
-                  faceInfo ?? "faceInfo is null",
-                  style: TextStyle(color: Colors.blue),
-                )),
-              ),
-            )
           ],
         ),
       ),
